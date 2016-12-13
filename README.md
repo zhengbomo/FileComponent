@@ -57,7 +57,7 @@ if (result == 1) {
 }
 ```
 
-### other API
+### Other API
 * public static ulong GetFolderSize([In] string pathOfFolder);
 * public static ulong GetFileSize([In] string pathOfFile);
 * public static int DirectoryExists([In] string pathOfFolder);
