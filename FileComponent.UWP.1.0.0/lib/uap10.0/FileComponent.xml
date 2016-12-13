@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        "FileComponent"
+    </assembly>
+    <members>
+        <member name="M:getSubItems(System.String,System.Int32)">
+获取文件夹子项目：1=当前目录文件，2=当前目录文件夹，3=当前目录所有子文件（含子文件夹） 
+</member>
+        <member name="M:writeFile(std.basic_string&lt;System.Char,std.char_traits{System.Char},std.allocator&lt;System.Char&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte*,System.Int32)">
+写文件0=失败，1=成功，2=写入长度不正确 
+</member>
+        <member name="M:FileComponent.NativeFileHelper.WriteFile(System.String,System.Byte[])">
+写文件，返回值：0=失败，1=成功，2=写入长度不正确 
+
+写文件，返回值：0=失败，1=成功，2=写入长度不正确 
+</member>
+    </members>
+</doc>
