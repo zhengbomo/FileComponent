@@ -9,7 +9,10 @@ the WinRT platform has not provided the Sync for File Operation, and the default
 * Thread safe (TODO)
 
 ## Nuget
-TODO
+```
+Install-Package FileComponent.UWP
+```
+> https://www.nuget.org/packages/FileComponent.UWP/
 
 ## Usage
 we use absoluted file path for operation, no StorageFile or StorageFolder
