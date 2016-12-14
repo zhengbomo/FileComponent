@@ -325,12 +325,20 @@ Platform::Array<Platform::String^>^ NativeFileHelper::GetSubDirectories(Platform
 
 int NativeFileHelper::RenameFile(Platform::String^ source, Platform::String^ dest)
 {
+	//如果目录不存在则创建
+	const std::wstring directory = getDirectory(dest->Data());
+	CreateDirectoryW(directory.c_str(), NULL);
+	
 	return MoveFileExW(source->Data(),
 		dest->Data(), NULL);
 }
 
 int NativeFileHelper::RenameFolder(Platform::String^ source, Platform::String^ dest)
 {
+	//如果目录不存在则创建
+	const std::wstring directory = getDirectory(dest->Data());
+	CreateDirectoryW(directory.c_str(), NULL);
+
 	return MoveFileExW(source->Data(),
 		dest->Data(), NULL);
 }

@@ -23,9 +23,9 @@ namespace FileComponent
 		static int RemoveDirectory(Platform::String^ pathOfFolder);
 
 	public:
-		/** 写文件，返回值：0=失败，1=成功，2=写入长度不正确 */
+		/** return value：0=fail，1=success，2=fail:uncorrect length */
 		static int WriteFile(Platform::String^ pathOfFolder, const Platform::Array<byte>^ data);
-
+	
 	public :
 		static Platform::Array<byte>^ ReadFile(Platform::String^ pathOfFolder);
 
