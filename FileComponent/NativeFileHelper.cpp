@@ -323,6 +323,18 @@ Platform::Array<Platform::String^>^ NativeFileHelper::GetSubDirectories(Platform
 	return getSubItems(pathOfFolder, TRUE);
 }
 
+int NativeFileHelper::RenameFile(Platform::String^ source, Platform::String^ dest)
+{
+	return MoveFileExW(source->Data(),
+		dest->Data(), NULL);
+}
+
+int NativeFileHelper::RenameFolder(Platform::String^ source, Platform::String^ dest)
+{
+	return MoveFileExW(source->Data(),
+		dest->Data(), NULL);
+}
+
 Platform::Array<Platform::String^>^ NativeFileHelper::GetAllFiles(Platform::String^ pathOfFolder)
 {
 	std::wstring path = pathOfFolder->Data();
