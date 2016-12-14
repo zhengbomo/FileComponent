@@ -23,7 +23,7 @@ using namespace Windows::Storage;
 using namespace Platform;
 
 /** 写文件0=失败，1=成功，2=写入长度不正确 */
-int writeFile(const std::wstring &strPath, char *data, int length) {
+int writeFile(Platform::String^ strPath, char *data, int length) {
 	HANDLE hFile;
 
 	char *DataBuffer = data;
@@ -32,21 +32,20 @@ int writeFile(const std::wstring &strPath, char *data, int length) {
 	DWORD dwBytesWritten = 0;
 	BOOL bErrorFlag = FALSE;
 
-
-	hFile = CreateFile2(strPath.c_str(),                // name of the write
-		GENERIC_WRITE,          // open for writing
-		FILE_SHARE_READ,		// do not share
-		CREATE_ALWAYS,			// default security
-		NULL);                  // no attr. template
+	hFile = CreateFile2(strPath->Data(),
+		GENERIC_WRITE,          
+		FILE_SHARE_READ,		
+		CREATE_ALWAYS,			
+		NULL);                  
 
 	int result = 0;
 	if (hFile != INVALID_HANDLE_VALUE) {
 		bErrorFlag = WriteFile(
-			hFile,           // open file handle
-			DataBuffer,			 // start of data to write
-			dwBytesToWrite,  // number of bytes to write
-			&dwBytesWritten, // number of bytes that were written
-			NULL);            // no overlapped structure
+			hFile,          
+			DataBuffer,		
+			dwBytesToWrite, 
+			&dwBytesWritten,
+			NULL);          
 
 		if (bErrorFlag != FALSE)
 		{
@@ -65,9 +64,9 @@ int writeFile(const std::wstring &strPath, char *data, int length) {
 	return result;
 }
 
-Platform::Array<byte>^ readFile(const std::wstring &strPath)
+Platform::Array<byte>^ readFile(Platform::String ^strPath)
 {
-	HANDLE pfile = CreateFile2(strPath.c_str(),                // name of the write
+	HANDLE pfile = CreateFile2(strPath->Data(),                // name of the write
 		GENERIC_READ,          // open for writing
 		FILE_SHARE_READ,		// do not share
 		OPEN_EXISTING,			// default security
@@ -139,8 +138,7 @@ unsigned __int64 getFolderSize(std::wstring path, std::wstring mask) {
 
 int NativeFileHelper::FileExists(Platform::String^ pathOfFolder)
 {
-	const std::wstring path = pathOfFolder->Data();
-	DWORD ftyp = GetFileAttributesW(path.c_str());
+	DWORD ftyp = GetFileAttributesW(pathOfFolder->Data());
 	if (ftyp != INVALID_FILE_ATTRIBUTES && !(ftyp & FILE_ATTRIBUTE_DIRECTORY))
 	{
 		return 1;
@@ -153,8 +151,7 @@ int NativeFileHelper::FileExists(Platform::String^ pathOfFolder)
 
 int NativeFileHelper::DirectoryExists(Platform::String^ pathOfFolder)
 {
-	const std::wstring path = pathOfFolder->Data();
-	DWORD ftyp = GetFileAttributesW(path.c_str());
+	DWORD ftyp = GetFileAttributesW(pathOfFolder->Data());
 	if (ftyp != INVALID_FILE_ATTRIBUTES && (ftyp & FILE_ATTRIBUTE_DIRECTORY))
 	{
 		return 1;
@@ -188,9 +185,7 @@ uint64 NativeFileHelper::GetFolderSize(Platform::String^ pathOfFolder)
 
 uint64 NativeFileHelper::GetFileSize(Platform::String^ pathOfFile)
 {
-	const std::wstring dd = pathOfFile->Data();
-
-	HANDLE pfile = CreateFile2(dd.c_str(),                // name of the write
+	HANDLE pfile = CreateFile2(pathOfFile->Data(),                // name of the write
 		GENERIC_READ,          // open for writing
 		FILE_SHARE_READ,		// do not share
 		OPEN_EXISTING,			// default security
@@ -247,21 +242,21 @@ int NativeFileHelper::RemoveDirectory(Platform::String^ pathOfFolder)
 /** 写文件，返回值：0=失败，1=成功，2=写入长度不正确 */
 int NativeFileHelper::WriteFile(Platform::String^ pathOfFolder, const Platform::Array<byte>^ data)
 {
-	uint32 length = data->Length;
-	unsigned char* content = data->Data;
-	char *charContent = (char *)content;
-
 	//如果目录不存在则创建
 	const std::wstring directory = getDirectory(pathOfFolder->Data());
 	CreateDirectoryW(directory.c_str(), NULL);
 
-	return writeFile(pathOfFolder->Data(), charContent, length);
+	uint32 length = data->Length;
+	unsigned char* content = data->Data;
+	char *charContent = (char *)content;
+
+	return writeFile(pathOfFolder, charContent, length);
 }
 
 
 Platform::Array<byte>^ NativeFileHelper::ReadFile(Platform::String^ pathOfFile)
 {
-	return readFile(pathOfFile->Data());
+	return readFile(pathOfFile);
 }
 
 
