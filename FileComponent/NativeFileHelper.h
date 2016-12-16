@@ -34,12 +34,9 @@ namespace FileComponent
 
 	public:
 		static Platform::Array<Platform::String^>^ GetSubDirectories(Platform::String^ pathOfFolder);
-
+/*
 	public:
-		static int RenameFolder(Platform::String^ source, Platform::String^ dest);
-
-	public:
-		static int RenameFile(Platform::String^ source, Platform::String^ dest);
+		static int RenameItem(Platform::String^ source, Platform::String^ dest);*/
 
 	public:
 		static Platform::Array<Platform::String^>^ GetAllFiles(Platform::String^ pathOfFolder);
