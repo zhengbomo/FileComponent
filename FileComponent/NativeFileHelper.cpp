@@ -66,27 +66,34 @@ int writeFile(Platform::String^ strPath, char *data, int length) {
 
 Platform::Array<byte>^ readFile(Platform::String ^strPath)
 {
-	HANDLE pfile = CreateFile2(strPath->Data(),                // name of the write
-		GENERIC_READ,          // open for writing
-		FILE_SHARE_READ,		// do not share
-		OPEN_EXISTING,			// default security
-		NULL);                  // no attr. template
+	DWORD ftyp = GetFileAttributesW(strPath->Data());
+	if (ftyp != INVALID_FILE_ATTRIBUTES && !(ftyp & FILE_ATTRIBUTE_DIRECTORY))
+	{
+		HANDLE pfile = CreateFile2(strPath->Data(),                // name of the write
+			GENERIC_READ,          // open for writing
+			FILE_SHARE_READ,		// do not share
+			OPEN_EXISTING,			// default security
+			NULL);                  // no attr. template
 
-	LARGE_INTEGER  fileSize;
-	GetFileSizeEx(pfile, &fileSize);
-	int64 size = fileSize.QuadPart;
-	char* buffer = new char[size]; // 最后一位为 '/0',C-Style 字符串的结束符
+		LARGE_INTEGER  fileSize;
+		GetFileSizeEx(pfile, &fileSize);
+		int64 size = fileSize.QuadPart;
+		char* buffer = new char[size]; // 最后一位为 '/0',C-Style 字符串的结束符
 
-	DWORD readsize;
+		DWORD readsize;
 
-	ReadFile(pfile, buffer, size, &readsize, NULL);
-	CloseHandle(pfile);
+		ReadFile(pfile, buffer, size, &readsize, NULL);
+		CloseHandle(pfile);
 
-	byte *byteData = (byte *)buffer;
-	Platform::Array<byte>^ result = ref new Platform::Array<byte>(byteData, size);
+		byte *byteData = (byte *)buffer;
+		Platform::Array<byte>^ result = ref new Platform::Array<byte>(byteData, size);
 
-	delete[] buffer;
-	return result;
+		delete[] buffer;
+		return result;
+	}
+	else {
+		return nullptr;
+	}
 }
 
 unsigned __int64 getFolderSize(std::wstring path, std::wstring mask) {
